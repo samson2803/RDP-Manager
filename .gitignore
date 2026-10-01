@@ -3,5 +3,7 @@ bin/
 obj/
 *.user
 *.suo
+# Release-Pakete (werden als GitHub-Release hochgeladen, nicht ins Repo)
+dist/
 # Alte Originaldateien (enthalten Zugangsdaten!)
 _backup_original/
