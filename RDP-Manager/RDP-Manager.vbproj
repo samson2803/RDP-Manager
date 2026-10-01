@@ -63,6 +63,15 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Net.Http" />
+    <!-- RDP-ActiveX-Wrapper, erzeugt mit: AxImp.exe C:\Windows\System32\mstscax.dll -->
+    <Reference Include="AxMSTSCLib">
+      <HintPath>lib\AxMSTSCLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MSTSCLib">
+      <HintPath>lib\MSTSCLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
@@ -82,6 +91,12 @@
     <Compile Include="ConnectionStore.vb" />
     <Compile Include="CredentialStore.vb" />
     <Compile Include="Theme.vb" />
+    <Compile Include="FlatTabControl.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RdpSessionPage.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="MainForm.vb">
       <SubType>Form</SubType>
     </Compile>

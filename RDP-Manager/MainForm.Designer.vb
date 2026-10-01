@@ -41,12 +41,18 @@ Partial Class MainForm
         Me.tsbEdit = New System.Windows.Forms.ToolStripButton()
         Me.tsbDelete = New System.Windows.Forms.ToolStripButton()
         Me.tsbSettings = New System.Windows.Forms.ToolStripButton()
+        Me.SessionSeparator = New System.Windows.Forms.ToolStripSeparator()
+        Me.tsbFullScreen = New System.Windows.Forms.ToolStripButton()
+        Me.tsbDisconnect = New System.Windows.Forms.ToolStripButton()
+        Me.tabMain = New Global.RDP_Manager.FlatTabControl()
+        Me.tabList = New System.Windows.Forms.TabPage()
         Me.dgvConnections = New System.Windows.Forms.DataGridView()
         Me.colName = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colAddress = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colUsername = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.cmsConnection = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.cmiConnect = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmiOpenExternal = New System.Windows.Forms.ToolStripMenuItem()
         Me.ContextSeparator = New System.Windows.Forms.ToolStripSeparator()
         Me.cmiEdit = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmiDelete = New System.Windows.Forms.ToolStripMenuItem()
@@ -54,6 +60,8 @@ Partial Class MainForm
         Me.lblStatus = New System.Windows.Forms.ToolStripStatusLabel()
         Me.MenuStrip1.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
+        Me.tabMain.SuspendLayout()
+        Me.tabList.SuspendLayout()
         CType(Me.dgvConnections, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.cmsConnection.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
@@ -135,7 +143,7 @@ Partial Class MainForm
         'ToolStrip1
         '
         Me.ToolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbConnect, Me.ToolSeparator, Me.tsbNew, Me.tsbEdit, Me.tsbDelete, Me.tsbSettings})
+        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbConnect, Me.ToolSeparator, Me.tsbNew, Me.tsbEdit, Me.tsbDelete, Me.SessionSeparator, Me.tsbFullScreen, Me.tsbDisconnect, Me.tsbSettings})
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 25)
         Me.ToolStrip1.Name = "ToolStrip1"
         Me.ToolStrip1.Padding = New System.Windows.Forms.Padding(8, 4, 8, 4)
@@ -186,6 +194,46 @@ Partial Class MainForm
         Me.tsbSettings.Size = New System.Drawing.Size(32, 27)
         Me.tsbSettings.Text = "Einstellungen"
         '
+        'SessionSeparator
+        '
+        Me.SessionSeparator.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.SessionSeparator.Name = "SessionSeparator"
+        Me.SessionSeparator.Size = New System.Drawing.Size(6, 30)
+        '
+        'tsbFullScreen
+        '
+        Me.tsbFullScreen.Name = "tsbFullScreen"
+        Me.tsbFullScreen.Padding = New System.Windows.Forms.Padding(6, 2, 6, 2)
+        Me.tsbFullScreen.Size = New System.Drawing.Size(80, 27)
+        Me.tsbFullScreen.Text = "Vollbild"
+        '
+        'tsbDisconnect
+        '
+        Me.tsbDisconnect.Name = "tsbDisconnect"
+        Me.tsbDisconnect.Padding = New System.Windows.Forms.Padding(6, 2, 6, 2)
+        Me.tsbDisconnect.Size = New System.Drawing.Size(80, 27)
+        Me.tsbDisconnect.Text = "Trennen"
+        '
+        'tabMain
+        '
+        Me.tabMain.Controls.Add(Me.tabList)
+        Me.tabMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tabMain.Location = New System.Drawing.Point(0, 63)
+        Me.tabMain.Name = "tabMain"
+        Me.tabMain.SelectedIndex = 0
+        Me.tabMain.Size = New System.Drawing.Size(640, 335)
+        Me.tabMain.TabIndex = 2
+        '
+        'tabList
+        '
+        Me.tabList.BackColor = System.Drawing.Color.White
+        Me.tabList.Controls.Add(Me.dgvConnections)
+        Me.tabList.Location = New System.Drawing.Point(4, 32)
+        Me.tabList.Name = "tabList"
+        Me.tabList.Size = New System.Drawing.Size(632, 299)
+        Me.tabList.TabIndex = 0
+        Me.tabList.Text = "Verbindungen"
+        '
         'dgvConnections
         '
         Me.dgvConnections.AllowUserToAddRows = False
@@ -195,14 +243,14 @@ Partial Class MainForm
         Me.dgvConnections.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colName, Me.colAddress, Me.colUsername})
         Me.dgvConnections.ContextMenuStrip = Me.cmsConnection
         Me.dgvConnections.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.dgvConnections.Location = New System.Drawing.Point(0, 63)
+        Me.dgvConnections.Location = New System.Drawing.Point(0, 0)
         Me.dgvConnections.MultiSelect = False
         Me.dgvConnections.Name = "dgvConnections"
         Me.dgvConnections.ReadOnly = True
         Me.dgvConnections.RowHeadersVisible = False
         Me.dgvConnections.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgvConnections.Size = New System.Drawing.Size(640, 335)
-        Me.dgvConnections.TabIndex = 2
+        Me.dgvConnections.Size = New System.Drawing.Size(632, 299)
+        Me.dgvConnections.TabIndex = 0
         '
         'colName
         '
@@ -229,7 +277,7 @@ Partial Class MainForm
         '
         'cmsConnection
         '
-        Me.cmsConnection.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmiConnect, Me.ContextSeparator, Me.cmiEdit, Me.cmiDelete})
+        Me.cmsConnection.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmiConnect, Me.cmiOpenExternal, Me.ContextSeparator, Me.cmiEdit, Me.cmiDelete})
         Me.cmsConnection.Name = "cmsConnection"
         Me.cmsConnection.Size = New System.Drawing.Size(150, 76)
         '
@@ -239,6 +287,12 @@ Partial Class MainForm
         Me.cmiConnect.Name = "cmiConnect"
         Me.cmiConnect.Size = New System.Drawing.Size(149, 22)
         Me.cmiConnect.Text = "Verbinden"
+        '
+        'cmiOpenExternal
+        '
+        Me.cmiOpenExternal.Name = "cmiOpenExternal"
+        Me.cmiOpenExternal.Size = New System.Drawing.Size(149, 22)
+        Me.cmiOpenExternal.Text = "Extern öffnen (mstsc)"
         '
         'ContextSeparator
         '
@@ -280,7 +334,7 @@ Partial Class MainForm
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(640, 420)
-        Me.Controls.Add(Me.dgvConnections)
+        Me.Controls.Add(Me.tabMain)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.MenuStrip1)
@@ -294,6 +348,8 @@ Partial Class MainForm
         Me.MenuStrip1.PerformLayout()
         Me.ToolStrip1.ResumeLayout(False)
         Me.ToolStrip1.PerformLayout()
+        Me.tabMain.ResumeLayout(False)
+        Me.tabList.ResumeLayout(False)
         CType(Me.dgvConnections, System.ComponentModel.ISupportInitialize).EndInit()
         Me.cmsConnection.ResumeLayout(False)
         Me.StatusStrip1.ResumeLayout(False)
@@ -321,12 +377,18 @@ Partial Class MainForm
     Friend WithEvents tsbEdit As ToolStripButton
     Friend WithEvents tsbDelete As ToolStripButton
     Friend WithEvents tsbSettings As ToolStripButton
+    Friend WithEvents SessionSeparator As ToolStripSeparator
+    Friend WithEvents tsbFullScreen As ToolStripButton
+    Friend WithEvents tsbDisconnect As ToolStripButton
+    Friend WithEvents tabMain As FlatTabControl
+    Friend WithEvents tabList As TabPage
     Friend WithEvents dgvConnections As DataGridView
     Friend WithEvents colName As DataGridViewTextBoxColumn
     Friend WithEvents colAddress As DataGridViewTextBoxColumn
     Friend WithEvents colUsername As DataGridViewTextBoxColumn
     Friend WithEvents cmsConnection As ContextMenuStrip
     Friend WithEvents cmiConnect As ToolStripMenuItem
+    Friend WithEvents cmiOpenExternal As ToolStripMenuItem
     Friend WithEvents ContextSeparator As ToolStripSeparator
     Friend WithEvents cmiEdit As ToolStripMenuItem
     Friend WithEvents cmiDelete As ToolStripMenuItem

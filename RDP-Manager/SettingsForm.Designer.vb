@@ -22,7 +22,9 @@ Partial Class SettingsForm
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.pnlContent = New System.Windows.Forms.Panel()
+        Me.pnlContent = New System.Windows.Forms.FlowLayoutPanel()
+        Me.chkOpenInTabs = New System.Windows.Forms.CheckBox()
+        Me.chkPassStoredPassword = New System.Windows.Forms.CheckBox()
         Me.chkMinimizeOnConnect = New System.Windows.Forms.CheckBox()
         Me.pnlButtons = New System.Windows.Forms.FlowLayoutPanel()
         Me.btnCancel = New System.Windows.Forms.Button()
@@ -33,21 +35,43 @@ Partial Class SettingsForm
         '
         'pnlContent
         '
+        Me.pnlContent.Controls.Add(Me.chkOpenInTabs)
+        Me.pnlContent.Controls.Add(Me.chkPassStoredPassword)
         Me.pnlContent.Controls.Add(Me.chkMinimizeOnConnect)
         Me.pnlContent.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlContent.FlowDirection = System.Windows.Forms.FlowDirection.TopDown
         Me.pnlContent.Location = New System.Drawing.Point(0, 0)
         Me.pnlContent.Name = "pnlContent"
-        Me.pnlContent.Padding = New System.Windows.Forms.Padding(16)
-        Me.pnlContent.Size = New System.Drawing.Size(360, 72)
+        Me.pnlContent.Padding = New System.Windows.Forms.Padding(16, 14, 16, 8)
+        Me.pnlContent.Size = New System.Drawing.Size(400, 122)
         Me.pnlContent.TabIndex = 0
+        Me.pnlContent.WrapContents = False
+        '
+        'chkOpenInTabs
+        '
+        Me.chkOpenInTabs.AutoSize = True
+        Me.chkOpenInTabs.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
+        Me.chkOpenInTabs.Name = "chkOpenInTabs"
+        Me.chkOpenInTabs.TabIndex = 0
+        Me.chkOpenInTabs.Text = "Verbindungen in &Tabs öffnen (statt mstsc.exe)"
+        Me.chkOpenInTabs.UseVisualStyleBackColor = True
+        '
+        'chkPassStoredPassword
+        '
+        Me.chkPassStoredPassword.AutoSize = True
+        Me.chkPassStoredPassword.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
+        Me.chkPassStoredPassword.Name = "chkPassStoredPassword"
+        Me.chkPassStoredPassword.TabIndex = 1
+        Me.chkPassStoredPassword.Text = "Gespeichertes &Passwort in Tabs automatisch übergeben"
+        Me.chkPassStoredPassword.UseVisualStyleBackColor = True
         '
         'chkMinimizeOnConnect
         '
         Me.chkMinimizeOnConnect.AutoSize = True
-        Me.chkMinimizeOnConnect.Location = New System.Drawing.Point(19, 19)
+        Me.chkMinimizeOnConnect.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.chkMinimizeOnConnect.Name = "chkMinimizeOnConnect"
-        Me.chkMinimizeOnConnect.TabIndex = 0
-        Me.chkMinimizeOnConnect.Text = "Beim Verbinden &minimieren"
+        Me.chkMinimizeOnConnect.TabIndex = 2
+        Me.chkMinimizeOnConnect.Text = "Beim Verbinden mit mstsc.exe &minimieren"
         Me.chkMinimizeOnConnect.UseVisualStyleBackColor = True
         '
         'pnlButtons
@@ -57,10 +81,10 @@ Partial Class SettingsForm
         Me.pnlButtons.Controls.Add(Me.btnSave)
         Me.pnlButtons.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.pnlButtons.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft
-        Me.pnlButtons.Location = New System.Drawing.Point(0, 72)
+        Me.pnlButtons.Location = New System.Drawing.Point(0, 122)
         Me.pnlButtons.Name = "pnlButtons"
         Me.pnlButtons.Padding = New System.Windows.Forms.Padding(13, 12, 13, 12)
-        Me.pnlButtons.Size = New System.Drawing.Size(360, 58)
+        Me.pnlButtons.Size = New System.Drawing.Size(400, 58)
         Me.pnlButtons.TabIndex = 1
         '
         'btnCancel
@@ -85,7 +109,7 @@ Partial Class SettingsForm
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.CancelButton = Me.btnCancel
-        Me.ClientSize = New System.Drawing.Size(360, 130)
+        Me.ClientSize = New System.Drawing.Size(400, 180)
         Me.Controls.Add(Me.pnlContent)
         Me.Controls.Add(Me.pnlButtons)
         Me.Font = New System.Drawing.Font("Segoe UI", 9.0!)
@@ -104,7 +128,9 @@ Partial Class SettingsForm
 
     End Sub
 
-    Friend WithEvents pnlContent As Panel
+    Friend WithEvents pnlContent As FlowLayoutPanel
+    Friend WithEvents chkOpenInTabs As CheckBox
+    Friend WithEvents chkPassStoredPassword As CheckBox
     Friend WithEvents chkMinimizeOnConnect As CheckBox
     Friend WithEvents pnlButtons As FlowLayoutPanel
     Friend WithEvents btnCancel As Button

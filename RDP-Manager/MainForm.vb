@@ -50,8 +50,12 @@ Public Class MainForm
         ExitToolStripMenuItem.Image = makeIcon(Theme.Glyph.Power)
 
         cmiConnect.Image = accentIcon
+        cmiOpenExternal.Image = makeIcon(Theme.Glyph.OpenExternal)
         cmiEdit.Image = tsbEdit.Image
         cmiDelete.Image = tsbDelete.Image
+
+        tsbFullScreen.Image = makeIcon(Theme.Glyph.FullScreen)
+        tsbDisconnect.Image = makeIcon(Theme.Glyph.Disconnect)
     End Sub
 
 #Region "Laden / Speichern"
@@ -91,6 +95,33 @@ Public Class MainForm
         Dim conn = SelectedConnection
         If conn Is Nothing Then Return
 
+        If My.Settings.OpenInTabs Then
+            OpenInTab(conn)
+        Else
+            OpenExternal(conn)
+        End If
+    End Sub
+
+    Private Sub OpenInTab(conn As Connection)
+        Dim page As New RdpSessionPage(conn)
+        AddHandler page.Closed, AddressOf SessionPage_Closed
+        tabMain.TabPages.Add(page)
+        tabMain.SelectedTab = page
+
+        Try
+            page.Connect()
+        Catch ex As Exception When TypeOf ex Is Runtime.InteropServices.COMException OrElse
+                                   TypeOf ex Is Win32Exception OrElse
+                                   TypeOf ex Is AxHost.InvalidActiveXStateException
+            tabMain.TabPages.Remove(page)
+            page.Dispose()
+            MessageBox.Show(Me, "Die eingebettete RDP-Sitzung konnte nicht gestartet werden:" & vbCrLf & ex.Message,
+                            "Verbinden", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+        UpdateButtons()
+    End Sub
+
+    Private Sub OpenExternal(conn As Connection)
         Dim mstsc As Process
         Try
             mstsc = Process.Start("mstsc.exe", "/v:" & conn.Address)
@@ -216,9 +247,13 @@ Public Class MainForm
         Dim hasSelection = SelectedConnection IsNot Nothing
         For Each item As ToolStripItem In {tsbConnect, tsbEdit, tsbDelete,
                                           ConnectToolStripMenuItem, EditToolStripMenuItem, DeleteToolStripMenuItem,
-                                          cmiConnect, cmiEdit, cmiDelete}
+                                          cmiConnect, cmiOpenExternal, cmiEdit, cmiDelete}
             item.Enabled = hasSelection
         Next
+
+        Dim hasSession = ActiveSession IsNot Nothing
+        tsbFullScreen.Enabled = hasSession
+        tsbDisconnect.Enabled = hasSession
     End Sub
 
     Private Sub UpdateStatus()
@@ -297,6 +332,70 @@ Public Class MainForm
     Private Sub Connections_ListChanged(sender As Object, e As ListChangedEventArgs) Handles _connections.ListChanged
         UpdateStatus()
         dgvConnections.Invalidate()
+    End Sub
+
+#End Region
+
+#Region "Eingebettete Sitzungen (Tabs)"
+
+    ' True, während beim Beenden auf das Trennen der offenen Sitzungen gewartet wird.
+    Private _closingAfterSessions As Boolean
+
+    Private ReadOnly Property ActiveSession As RdpSessionPage
+        Get
+            Return TryCast(tabMain.SelectedTab, RdpSessionPage)
+        End Get
+    End Property
+
+    Private ReadOnly Property OpenSessions As List(Of RdpSessionPage)
+        Get
+            Return tabMain.TabPages.OfType(Of RdpSessionPage)().ToList()
+        End Get
+    End Property
+
+    Private Sub OpenExternal_Click(sender As Object, e As EventArgs) Handles cmiOpenExternal.Click
+        Dim conn = SelectedConnection
+        If conn IsNot Nothing Then OpenExternal(conn)
+    End Sub
+
+    Private Sub FullScreen_Click(sender As Object, e As EventArgs) Handles tsbFullScreen.Click
+        ActiveSession?.EnterFullScreen()
+    End Sub
+
+    Private Sub Disconnect_Click(sender As Object, e As EventArgs) Handles tsbDisconnect.Click
+        ActiveSession?.CloseSession()
+    End Sub
+
+    Private Sub tabMain_TabCloseRequested(sender As Object, page As TabPage) Handles tabMain.TabCloseRequested
+        TryCast(page, RdpSessionPage)?.CloseSession()
+    End Sub
+
+    Private Sub tabMain_SelectedIndexChanged(sender As Object, e As EventArgs) Handles tabMain.SelectedIndexChanged
+        UpdateButtons()
+        ActiveSession?.FocusSession()
+    End Sub
+
+    Private Sub SessionPage_Closed(sender As Object, e As EventArgs)
+        UpdateButtons()
+        If _closingAfterSessions AndAlso OpenSessions.Count = 0 Then BeginInvoke(New Action(AddressOf Close))
+    End Sub
+
+    ' Offene Sitzungen erst sauber trennen, dann beenden.
+    Private Sub MainForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
+        Dim sessions = OpenSessions
+        If sessions.Count = 0 Then Return
+
+        e.Cancel = True
+        If _closingAfterSessions Then Return
+
+        Dim text = If(sessions.Count = 1, "Es ist noch 1 Sitzung geöffnet.", $"Es sind noch {sessions.Count} Sitzungen geöffnet.")
+        If MessageBox.Show(Me, text & " Trennen und beenden?", "Beenden",
+                           MessageBoxButtons.YesNo, MessageBoxIcon.Question) <> DialogResult.Yes Then Return
+
+        _closingAfterSessions = True
+        For Each session In sessions
+            session.CloseSession()
+        Next
     End Sub
 
 #End Region

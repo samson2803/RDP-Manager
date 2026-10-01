@@ -28,6 +28,10 @@ Public Module Theme
         Public Const Settings As Char = ChrW(&HE713)
         Public Const Power As Char = ChrW(&HE7E8)
         Public Const Monitor As Char = ChrW(&HE7F4)
+        Public Const FullScreen As Char = ChrW(&HE740)
+        Public Const Disconnect As Char = ChrW(&HE711)
+        Public Const OpenExternal As Char = ChrW(&HE8A7)
+        Public Const Close As Char = ChrW(&HE8BB)
     End Class
 
     Private ReadOnly IconFont As FontFamily = FindIconFont()
