@@ -1,0 +1,7 @@
+.vs/
+bin/
+obj/
+*.user
+*.suo
+# Alte Originaldateien (enthalten Zugangsdaten!)
+_backup_original/
