@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("")>
 <Assembly: AssemblyCompany("")>
 <Assembly: AssemblyProduct("RDP-Manager")>
-<Assembly: AssemblyCopyright("Copyright ©  2025")>
+<Assembly: AssemblyCopyright("Copyright © 2025-2026 samson2803")>
 <Assembly: AssemblyTrademark("")>
 
 <Assembly: ComVisible(False)>
